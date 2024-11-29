@@ -13,6 +13,7 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 find_package(pybind11_vendor REQUIRED)
 find_package(pybind11 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(py_binding_tools REQUIRED)
 
 ament_python_install_package(behaviortree_py PACKAGE_DIR behaviortree_py)
 
@@ -27,8 +28,10 @@ target_include_directories(
 
 pybind11_add_module(behaviortree_py src/behaviortree_py.cpp)
 target_compile_features(behaviortree_py PRIVATE cxx_std_20)
-target_link_libraries(behaviortree_py PRIVATE behaviortree_cpp::behaviortree_cpp
-                                              fmt::fmt ${PROJECT_NAME}_headers)
+target_link_libraries(
+  behaviortree_py
+  PRIVATE behaviortree_cpp::behaviortree_cpp fmt::fmt ${PROJECT_NAME}_headers
+          py_binding_tools::py_binding_tools)
 
 add_custom_command(
   TARGET behaviortree_py
