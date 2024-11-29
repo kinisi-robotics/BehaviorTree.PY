@@ -16,13 +16,17 @@ find_package(fmt REQUIRED)
 
 ament_python_install_package(behaviortree_py PACKAGE_DIR behaviortree_py)
 
+add_library(${PROJECT_NAME}_headers INTERFACE)
+
+target_include_directories(
+  ${PROJECT_NAME}_headers
+  INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+            "$<INSTALL_INTERFACE:include>")
+
 pybind11_add_module(behaviortree_py src/behaviortree_py.cpp)
 target_compile_features(behaviortree_py PRIVATE cxx_std_20)
 target_link_libraries(behaviortree_py PRIVATE behaviortree_cpp::behaviortree_cpp
-                                              fmt::fmt)
-target_include_directories(
-  behaviortree_py PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                          $<INSTALL_INTERFACE:include>)
+                                              fmt::fmt ${PROJECT_NAME}_headers)
 
 add_custom_command(
   TARGET behaviortree_py
@@ -35,10 +39,20 @@ add_custom_command(
 install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
 install(TARGETS behaviortree_py
         LIBRARY DESTINATION ${PYTHON_INSTALL_DIR}/behaviortree_py)
+
+install(
+  TARGETS ${PROJECT_NAME}_headers
+  EXPORT ${PROJECT_NAME}Targets
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib
+  INCLUDES
+  DESTINATION include)
 install(
   FILES
     $<TARGET_FILE_DIR:behaviortree_py>/$<TARGET_FILE_BASE_NAME:behaviortree_py>.pyi
   COMPONENT python
   DESTINATION ${PYTHON_INSTALL_DIR}/$<TARGET_FILE_BASE_NAME:behaviortree_py>)
 
+ament_export_targets(${PROJECT_NAME}Targets)
 ament_package()
