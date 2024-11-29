@@ -25,17 +25,17 @@ xml_text = """
 def say_something_double(
     tree_node: bt.TreeNode,
 ) -> bt.NodeStatus:
-    print(tree_node.get_input_double("message"))
+    print(bt.get_input_double(tree_node, "message"))
     return bt.NodeStatus.SUCCESS
 
 
 def say_something(tree_node: bt.TreeNode) -> bt.NodeStatus:
-    print(tree_node.get_input_string("message"))
+    print(bt.get_input_string(tree_node, "message"))
     return bt.NodeStatus.SUCCESS
 
 
 def set_value(tree_node: bt.TreeNode) -> bt.NodeStatus:
-    if not (result := tree_node.set_output("value", 24.9)):
+    if not (result := bt.set_output(tree_node, "value", 24.9)):
         return bt.NodeStatus.FAILURE
     return bt.NodeStatus.SUCCESS
 

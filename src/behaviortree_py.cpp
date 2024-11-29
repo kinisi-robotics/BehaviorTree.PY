@@ -16,6 +16,7 @@
 #include <behaviortree_cpp/loggers/bt_cout_logger.h>
 #include <behaviortree_cpp/loggers/groot2_publisher.h>
 #include <behaviortree_cpp/tree_node.h>
+#include <behaviortree_py/behaviortree_py.hpp>
 
 namespace py = pybind11;
 using namespace BT;
@@ -49,26 +50,7 @@ PYBIND11_MODULE(behaviortree_py, m) {
   py::class_<TreeNode, std::shared_ptr<TreeNode>>(m, "TreeNode")
       .def("name", &TreeNode::name)
       .def("status", &TreeNode::status)
-      .def("type", &TreeNode::type)
-      .def("get_input_string",
-           [](TreeNode *self, const std::string &key) {
-             return self->getInput<std::string>(key).value();
-           })
-      .def("get_input_int",
-           [](TreeNode *self, const std::string &key) {
-             return self->getInput<int>(key).value();
-           })
-      .def("get_input_double",
-           [](TreeNode *self, const std::string &key) {
-             return self->getInput<double>(key).value();
-           })
-      .def("set_output",
-           py::overload_cast<const std::string &, const std::string &>(
-               &TreeNode::setOutput<std::string>))
-      .def("set_output", py::overload_cast<const std::string &, const int &>(
-                             &TreeNode::setOutput<int>))
-      .def("set_output", py::overload_cast<const std::string &, const double &>(
-                             &TreeNode::setOutput<double>));
+      .def("type", &TreeNode::type);
 
   py::class_<BehaviorTreeFactory>(m, "BehaviorTreeFactory")
       .def(py::init<>())
@@ -144,40 +126,8 @@ PYBIND11_MODULE(behaviortree_py, m) {
       },
       py::arg("root_tree"));
 
-  m.def(
-       "input_port_int",
-       [](BT::StringView name, BT::StringView description) {
-         return BT::InputPort<int>(name, description);
-       },
-       py::arg("name"), py::arg("description") = "")
-      .def(
-          "input_port_double",
-          [](BT::StringView name, BT::StringView description) {
-            return BT::InputPort<double>(name, description);
-          },
-          py::arg("name"), py::arg("description") = "")
-      .def(
-          "input_port_string",
-          [](BT::StringView name, BT::StringView description) {
-            return BT::InputPort<std::string>(name, description);
-          },
-          py::arg("name"), py::arg("description") = "")
-      .def(
-          "output_port_int",
-          [](BT::StringView name, BT::StringView description) {
-            return BT::OutputPort<int>(name, description);
-          },
-          py::arg("name"), py::arg("description") = "")
-      .def(
-          "output_port_double",
-          [](BT::StringView name, BT::StringView description) {
-            return BT::OutputPort<double>(name, description);
-          },
-          py::arg("name"), py::arg("description") = "")
-      .def(
-          "output_port_string",
-          [](BT::StringView name, BT::StringView description) {
-            return BT::OutputPort<std::string>(name, description);
-          },
-          py::arg("name"), py::arg("description") = "");
+  bind_port_methods<int>(m, "int");
+  bind_port_methods<double>(m, "double");
+  bind_port_methods<std::string>(m, "string");
+  bind_port_methods<bool>(m, "bool");
 }
