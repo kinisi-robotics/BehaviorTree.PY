@@ -3,9 +3,9 @@
 <package format="3">
   <name>behaviortree_py</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>ROS2 python binding to https://github.com/BehaviorTree/BehaviorTree.CPP</description>
   <maintainer email="jafar.uruc@gmail.com">Jafar Uruc</maintainer>
-  <license>TODO: License declaration</license>
+  <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
