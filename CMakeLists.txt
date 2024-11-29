@@ -18,6 +18,8 @@ ament_python_install_package(behaviortree_py PACKAGE_DIR behaviortree_py)
 
 add_library(${PROJECT_NAME}_headers INTERFACE)
 
+target_link_libraries(${PROJECT_NAME}_headers
+                      INTERFACE behaviortree_cpp::behaviortree_cpp fmt::fmt)
 target_include_directories(
   ${PROJECT_NAME}_headers
   INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
@@ -36,7 +38,7 @@ add_custom_command(
   WORKING_DIRECTORY $<TARGET_FILE_DIR:behaviortree_py>
   USES_TERMINAL)
 
-install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
+install(DIRECTORY include/ DESTINATION include/)
 install(TARGETS behaviortree_py
         LIBRARY DESTINATION ${PYTHON_INSTALL_DIR}/behaviortree_py)
 
