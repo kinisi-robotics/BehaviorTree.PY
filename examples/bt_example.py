@@ -1,5 +1,6 @@
-import behaviortree_py
 import time
+
+import behaviortree_py
 
 xml_text = """
 <root BTCPP_format="4">
@@ -31,7 +32,6 @@ xml_text = """
 
 
 class CrossDoor:
-
     def __init__(self):
         self.door_open = False
         self.door_locked = True
@@ -45,7 +45,8 @@ class CrossDoor:
         factory.register_simple_action("SmashDoor", self.smash_door)
 
     def is_door_closed(
-        self, tree_node: behaviortree_py.TreeNode
+        self,
+        tree_node: behaviortree_py.TreeNode,
     ) -> behaviortree_py.NodeStatus:
         time.sleep(0.2)
         return (
@@ -55,7 +56,8 @@ class CrossDoor:
         )
 
     def pass_through_door(
-        self, tree_node: behaviortree_py.TreeNode
+        self,
+        tree_node: behaviortree_py.TreeNode,
     ) -> behaviortree_py.NodeStatus:
         time.sleep(0.5)
         return (
@@ -65,7 +67,8 @@ class CrossDoor:
         )
 
     def open_door(
-        self, tree_node: behaviortree_py.TreeNode
+        self,
+        tree_node: behaviortree_py.TreeNode,
     ) -> behaviortree_py.NodeStatus:
         time.sleep(0.5)
         if self.door_locked:
@@ -74,7 +77,8 @@ class CrossDoor:
         return behaviortree_py.NodeStatus.SUCCESS
 
     def pick_lock(
-        self, tree_node: behaviortree_py.TreeNode
+        self,
+        tree_node: behaviortree_py.TreeNode,
     ) -> behaviortree_py.NodeStatus:
         time.sleep(0.5)
         self.pick_attempts += 1
