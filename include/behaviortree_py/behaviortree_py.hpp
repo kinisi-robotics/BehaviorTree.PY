@@ -51,7 +51,7 @@ BTPY_EXPORT BT::Any fromPython(const pybind11::object& bpo);
 // Get the name of all registered type converters
 std::vector<std::string> get_registered_converters();
 
-/// utility class to register C++ / Python converters for a BT::Any of type T
+/// Utility class to register C++ / Python converters for a BT::Any of type T
 template <typename T>
 class TypeConverter {
  public:

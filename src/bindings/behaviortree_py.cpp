@@ -125,5 +125,12 @@ PYBIND11_MODULE(behaviortree_py, m) {
           "output_port",
           [](BT::StringView name, BT::StringView description) { return BT::OutputPort<BT::Any>(name, description); },
           py::arg("name"),
+          py::arg("description") = "")
+      .def(
+          "bidirectional_port",
+          [](BT::StringView name, BT::StringView description) {
+            return BT::BidirectionalPort<BT::Any>(name, description);
+          },
+          py::arg("name"),
           py::arg("description") = "");
 }

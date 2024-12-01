@@ -40,6 +40,12 @@ bt.load_type_converters(
 ...
 ```
 
+## Limitations
+
+- Only `register_simple_action`, `register_simple_condition`, and `register_simple_decorator` are supported.
+- Due to limitations of `BT::Any` only copy-constructible types are supported.
+- Due to how `pybind11` handle memory, mixing `std::shared_ptr` and `std::unique_ptr` between python/c++ is not supported.
+
 ## Acknowledgements
 
 - A few functions were based on https://github.com/BehaviorTree/BehaviorTree.CPP/pull/634
