@@ -55,6 +55,7 @@ PYBIND11_MODULE(behaviortree_py, m) {
       .def("register_behavior_tree_from_text",
            &BT::BehaviorTreeFactory::registerBehaviorTreeFromText,
            py::arg("xml_text"))
+      .def("register_from_plugin", &BT::BehaviorTreeFactory::registerFromPlugin, py::arg("file_path"))
       .def("register_scripting_enum", &BT::BehaviorTreeFactory::registerScriptingEnum)
       .def(
           "register_simple_action",
@@ -116,6 +117,7 @@ PYBIND11_MODULE(behaviortree_py, m) {
       },
       py::arg("root_tree"));
 
+  m.def("get_registered_converters", &get_registered_converters);
   m.def(
        "input_port",
        [](BT::StringView name, BT::StringView description) { return BT::InputPort<BT::Any>(name, description); },

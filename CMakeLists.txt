@@ -49,7 +49,12 @@ pybind11_add_module(behaviortree_py src/bindings/behaviortree_py.cpp)
 target_compile_features(behaviortree_py PRIVATE cxx_std_20)
 target_link_libraries(behaviortree_py PRIVATE ${PROJECT_NAME}_lib)
 
-install(TARGETS behaviortree_py
+pybind11_add_module(example src/example.cpp)
+target_compile_features(example PRIVATE cxx_std_20)
+target_compile_definitions(example PRIVATE BT_PLUGIN_EXPORT)
+target_link_libraries(example PRIVATE ${PROJECT_NAME}_lib)
+
+install(TARGETS behaviortree_py example
         LIBRARY DESTINATION ${PYTHON_INSTALL_DIR}/behaviortree_py)
 
 # ##############################################################################
