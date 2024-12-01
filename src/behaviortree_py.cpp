@@ -43,6 +43,8 @@ bool TypeConverterRegistry::insert(const std::type_index& type_index,
 
   if (!ros_msg_name.empty()) {  // is this a ROS msg type?
     msg_names_.insert(std::make_pair(ros_msg_name, it_inserted.first));
+  } else {
+    msg_names_.insert(std::make_pair(BT::demangle(type_index), it_inserted.first));
   }
 
   return true;
@@ -83,9 +85,24 @@ BT::Any fromPython(const py::object& po) {
 
   const std::string& ros_msg_name = rosMsgName(o);
   auto it = TypeConverterRegistry::get().msg_names_.find(ros_msg_name);
-  if (it == TypeConverterRegistry::get().msg_names_.end())
-    throw py::type_error("No C++ conversion available for type: " + ros_msg_name +
-                         "\n Available conversions : " + fmt::format("{}", get_registered_converters()));
+  if (it == TypeConverterRegistry::get().msg_names_.end()) {
+    try {
+      // Get the Python type object
+      PyTypeObject* type = po.ptr()->ob_type;
+
+      // Check if it's a wrapped C++ type by checking for the type_info holder
+      if (auto* type_info = pybind11::detail::get_type_info(type)) {
+        const std::string cpptype = BT::demangle(*type_info->cpptype);
+        it = TypeConverterRegistry::get().msg_names_.find(cpptype);
+        if (it == TypeConverterRegistry::get().msg_names_.end()) {
+          throw py::type_error("No C++ conversion available for type: '" + cpptype +
+                               "'\n Available conversions : " + fmt::format("{}", get_registered_converters()));
+        }
+      }
+    } catch (const std::runtime_error& e) {
+      throw py::type_error(e.what());
+    }
+  }
 
   return it->second->second.from_(po);
 }
