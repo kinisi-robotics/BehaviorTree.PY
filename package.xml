@@ -11,6 +11,7 @@
 
   <depend>behaviortree_cpp</depend>
   <depend>py_binding_tools</depend>
+  <depend>ament_mypy</depend>
   <depend>fmt</depend>
 
   <export>
