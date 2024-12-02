@@ -51,8 +51,8 @@ sudo apt install mypy
 ## Limitations
 
 - Only `register_simple_action`, `register_simple_condition`, and `register_simple_decorator` are currently supported.
-- Due to limitations of `BT::Any` only copy-constructible types are supported.
-- Due to how `pybind11` handle memory, mixing `std::shared_ptr` and `std::unique_ptr` between python/c++ is not supported.
+- Due to limitations of `BT::Any`, only copy-constructible types are supported.
+- Due to how `pybind11` handle memory, mixing `std::shared_ptr` and `std::unique_ptr` between Python/C++ is not supported (You can't have an (in/out)_port with a shared_ptr/unique_ptr if you are planning to share it between Python/C++).
 
 ## Acknowledgements
 
