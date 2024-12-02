@@ -56,5 +56,5 @@ sudo apt install mypy
 
 ## Acknowledgements
 
-- A few functions were based on https://github.com/BehaviorTree/BehaviorTree.CPP/pull/634
+- `convertFromString` is based on https://github.com/BehaviorTree/BehaviorTree.CPP/pull/634
 - The TypeConverter is based on [moveit_task_constructor](https://github.com/moveit/moveit_task_constructor/)'s pybind11 implementation.
