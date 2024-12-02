@@ -10,6 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>behaviortree_cpp</depend>
+  <depend>py_binding_tools</depend>
   <depend>fmt</depend>
 
   <export>
