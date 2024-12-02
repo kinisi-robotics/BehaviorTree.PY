@@ -40,6 +40,14 @@ bt.load_type_converters(
 ...
 ```
 
+## Stubs generation
+
+If you want the stubs to be generated, you need to install the package `mypy`:
+
+```bash
+sudo apt install mypy
+```
+
 ## Limitations
 
 - Only `register_simple_action`, `register_simple_condition`, and `register_simple_decorator` are currently supported.

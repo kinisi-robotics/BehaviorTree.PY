@@ -60,19 +60,22 @@ install(TARGETS behaviortree_py example
 # ##############################################################################
 # ################## Generate and install Python stubs #########################
 # ##############################################################################
-add_custom_command(
-  TARGET behaviortree_py
-  POST_BUILD
-  COMMAND stubgen --output $<TARGET_FILE_DIR:behaviortree_py> -p behaviortree_py
-          -v --verbose
-  WORKING_DIRECTORY $<TARGET_FILE_DIR:behaviortree_py>
-  USES_TERMINAL)
+find_program(STUBGEN_EXECUTABLE stubgen)
+if(STUBGEN_EXECUTABLE)
+  add_custom_command(
+    TARGET behaviortree_py
+    POST_BUILD
+    COMMAND stubgen --output $<TARGET_FILE_DIR:behaviortree_py> -p
+            behaviortree_py -v --verbose
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:behaviortree_py>
+    USES_TERMINAL)
 
-install(
-  FILES
-    $<TARGET_FILE_DIR:behaviortree_py>/$<TARGET_FILE_BASE_NAME:behaviortree_py>.pyi
-  COMPONENT python
-  DESTINATION ${PYTHON_INSTALL_DIR}/$<TARGET_FILE_BASE_NAME:behaviortree_py>)
+  install(
+    FILES
+      $<TARGET_FILE_DIR:behaviortree_py>/$<TARGET_FILE_BASE_NAME:behaviortree_py>.pyi
+    COMPONENT python
+    DESTINATION ${PYTHON_INSTALL_DIR}/$<TARGET_FILE_BASE_NAME:behaviortree_py>)
+endif()
 
 ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
 ament_export_dependencies(behaviortree_cpp pybind11_vendor fmt py_binding_tools
