@@ -51,10 +51,16 @@ bool TypeConverterRegistry::insert(const std::type_index& type_index,
 }
 
 py::object toPython(const BT::Any& value) {
-  if (value.empty()) return py::object();
+  if (value.empty()) {
+    log_error("Trying to convert an empty Any object to Python");
+    return py::object();
+  }
 
   auto it = TypeConverterRegistry::get().types_.find(value.type());
   if (it == TypeConverterRegistry::get().types_.end()) {
+    if (value.isType<py::object>()) {
+      return value.cast<py::object>();
+    }
     std::string name = BT::demangle(value.type());
     throw py::type_error("No Python -> C++ conversion for: " + name);
   }
@@ -102,6 +108,10 @@ BT::Any fromPython(const py::object& po) {
     } catch (const std::runtime_error& e) {
       throw py::type_error(e.what());
     }
+  }
+  // If we still can't find a converter, return the object as is and hope for the best :D
+  if (it == TypeConverterRegistry::get().msg_names_.end()) {
+    return BT::Any(po);
   }
 
   return it->second->second.from_(po);

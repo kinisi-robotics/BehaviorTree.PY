@@ -41,8 +41,13 @@ PYBIND11_MODULE(behaviortree_py, m) {
       .def("status", &BT::TreeNode::status)
       .def("type", &BT::TreeNode::type)
       .def("get_input",
-           [](BT::TreeNode* self, const std::string& key) { return toPython(self->getInput<BT::Any>(key).value()); })
-      .def("set_output", [](BT::TreeNode* self, const std::string& key, py::object value) {
+           [](BT::TreeNode* self, const std::string& key) -> py::object {
+             if (const auto& input = self->getInput<BT::Any>(key); input.has_value()) {
+               return toPython(input.value());
+             }
+             throw py::key_error(fmt::format("get_input: Key '{}' not found", key));
+           })
+      .def("set_output", [](BT::TreeNode* self, const std::string& key, const py::object& value) {
         return self->setOutput(key, fromPython(value));
       });
 
