@@ -26,11 +26,15 @@ PYBIND11_MODULE(behaviortree_py, m) {
   });
 
   py::class_<BT::Blackboard, std::shared_ptr<BT::Blackboard>>(m, "Blackboard")
-      .def_static("create", &BT::Blackboard::create);
+      .def_static("create", &BT::Blackboard::create)
+      .def("set", [](BT::Blackboard* self, const std::string& key, const py::object& value) {
+        return self->set(key, fromPython(value));
+      });
 
   py::class_<BT::Tree>(m, "Tree")
       .def("root_node", &BT::Tree::rootNode, py::return_value_policy::reference_internal)
-      .def("tick_while_running", &BT::Tree::tickWhileRunning, py::arg("sleep_time") = std::chrono::milliseconds(10));
+      .def("tick_while_running", &BT::Tree::tickWhileRunning, py::arg("sleep_time") = std::chrono::milliseconds(10))
+      .def("root_blackboard", &BT::Tree::rootBlackboard);
 
   py::class_<BT::TreeNode, std::shared_ptr<BT::TreeNode>>(m, "TreeNode")
       .def("name", &BT::TreeNode::name)
