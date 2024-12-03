@@ -123,6 +123,18 @@ void LoadTypeConverters(const std::string& file_path) {
     log_error(fmt::format("Failed to load ROS Plugin: {} \n {}", file_path, ex.what()));
   }
 }
+
+void log_warn(const std::string& msg) {
+  printf(
+      "["
+      "\x1b[33m"
+      "warn"
+      "\x1b[0m"
+      "]: %s",
+      msg.c_str());
+  std::cout << std::endl;
+}
+
 void log_info(const std::string& msg) {
   printf(
       "["

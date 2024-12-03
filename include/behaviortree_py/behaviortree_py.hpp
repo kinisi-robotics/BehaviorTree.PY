@@ -14,6 +14,7 @@
 #define BTPY_EXPORT __attribute__((visibility("default")))
 #endif
 
+void log_warn(const std::string& msg);
 void log_info(const std::string& msg);
 void log_error(const std::string& msg);
 
