@@ -1,0 +1,29 @@
+# This file describes the docker image and rocker extensions to load
+# Rockerc configuration: https://github.com/blooop/rockerc
+#
+# Key components:
+# - image: Specifies the base image to pass to rocker
+# - args: Lists additional features or tools to be added to the docker image
+
+# image: nvcr.io/nvidia/isaac-sim:4.2.0
+# image: nvidia/cuda:12.2.2-devel-ubuntu22.04
+# image: pytorch/pytorch:2.5.1-cuda12.4-cudnn9-devel
+
+# image: ros:humble
+# image: ghcr.io/kinisi-robotics/dev:humble
+# dockerfile: .docker/dev/Dockerfile.kinisi
+# image: rwthika/ros2-torch:humble-desktop-full-torch2.5.0
+# image: rwthika/ros2:humble-desktop-full
+image: ubuntu:22.04
+args:
+  - nvidia
+  - x11
+  - user
+  - pull
+  - deps
+  - git
+  - ssh
+  - privileged
+  - dev-helpers
+  - ros-humble
+network: host
